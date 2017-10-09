@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            font-size: 14px;
+        }
+        a{
+            text-decoration: none;
+            padding: 0 10px;
+            color: #333;
+        }
+        span{
+            color: #666;
+        }
+        p{
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<h5>发表文章</h5>
+<div>
+    <form id="saveReportForm" method="post">
+        <p>
+            <label for="title">文章标题:</label>
+            <input type="text" id="title" name="title" placeholder="文章标题">
+        </p>
+        <p>
+            <label for="author">作&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;者:</label>
+            <input type="text" id="author" name="author" placeholder="作者">
+        </p>
+        <p>
+            <label for="content">文章内容:</label>
+            <textarea id="content" name="content" placeholder="文章内容"></textarea>
+        </p>
+        <p>
+            <input type="button" value="发表" onclick="submitNews()">
+        </p>
+    </form>
+</div>
+<script type="text/javascript" src="http://libs.baidu.com/jquery/1.8.0/jquery.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script type="text/javascript">
+    var id = window.location.search.split('=').pop();
+
+    // 编辑文章时获取数据
+    if(id != "") {
+        axios.get('/api/newslist/' + id)
+        .then(function(res){
+            $('#title').val(res.data.title);
+            $('#author').val(res.data.author);
+            $('#content').val(res.data.content);
+        })
+        .catch(function(error){
+            console.log(error);
+        });
+    }
+
+    // 提交数据
+    function submitNews() {
+        if (id == "") {
+
+            // 创建文章
+            axios.post('/api/newsedit', {
+                title: $('#title').val(),
+                author: $('#author').val() ? $('#author').val() : '未知',
+                date: '',
+                content: $('#content').val()
+            })
+            .then(function (res) {
+                $('input[type=text], textarea').val("");
+                alert('恭喜你,发表成功了!');
+                window.location.href = '/newslist'
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+        } else {
+
+            // 更新文章
+            axios.post('/api/newsedit/' + id, {
+                title: $('#title').val(),
+                author: $('#author').val() ? $('#author').val() : '未知',
+                date: '',
+                content: $('#content').val()
+            })
+            .then(function (res) {
+                $('input[type=text], textarea').val("");
+                alert('恭喜你,编辑成功了!');
+                window.location.href = '/newslist'
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        }
+    }
+
+</script>
+</body>
+</html>

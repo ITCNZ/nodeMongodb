@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            font-size: 14px;
+        }
+        a{
+            text-decoration: none;
+            padding: 0 10px;
+            color: #333;
+        }
+        a:hover{
+            text-decoration: underline;
+            color: #000;
+        }
+        .dark{
+            color: #999;
+        }
+
+    </style>
+</head>
+<body>
+<h5>爬虫案例</h5>
+<ul class="node-list"></ul>
+
+<script type="text/javascript" src="http://libs.baidu.com/jquery/1.8.0/jquery.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script type="text/javascript">
+       var params = window.location.href.split('?').pop()
+       var params1 = params.split('&');
+       var paramsData = {};
+       params1.forEach(function (item, i) {
+           var items = item.split('=')
+           paramsData[items[0]] = items[1];
+       });
+       paramsData.page = paramsData.page ? paramsData.page : 1;
+
+       axios.get('/api/cnode?page=' + paramsData.page)
+        .then((res) => {
+           res.data.resDatas.forEach((data, i) => {
+                $('.node-list').append('<li>' +
+                        '<span class="dark">' + data.replyCount + '/' + data.viewCount +'</span> ' +
+                        '<a href="' + data.url + '">' + data.title +'</a> ' +
+                        '<span class="dark">' + data.time +'</span>' +
+                    '</li>')
+           })
+        })
+        .catch(function(error){
+            console.log(error);
+        });
+</script>
+</body>
+</html>

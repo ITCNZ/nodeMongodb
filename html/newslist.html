@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            font-size: 14px;
+        }
+        a{
+            text-decoration: none;
+            padding: 0 10px;
+            color: #333;
+        }
+        span{
+            color: #666;
+        }
+        li{
+            padding: 5px 0;
+        }
+        input{margin-left: 10px}
+    </style>
+</head>
+<body>
+<h5>文章列表</h5>
+<div>
+    <ul class="list"></ul>
+</div>
+<script type="text/javascript" src="http://libs.baidu.com/jquery/1.8.0/jquery.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script type="text/javascript">
+
+    // 获取列表
+    function getList() {
+        $('.list').html('');
+        axios.get('/api/newslist')
+        .then(function(res){
+            console.log(res.data);
+            for (var i = 0; i < res.data.length; i++) {
+
+                $('.list').append('<li><a href="/newsdetail/' + res.data[i]._id + '">' + res.data[i].title +'</a> <span>' + res.data[i].date +'</span>' +
+                        '<input type="button" value="编辑" onclick=editNews("' + res.data[i]._id + '")>' +
+                        '<input type="button" value="删除" onclick=delNews("' + res.data[i]._id + '")></li>')
+            }
+        })
+        .catch(function(error){
+            console.log(error);
+        });
+    }
+
+    getList();
+
+    // 删除文章
+    function delNews(id) {
+        if (window.confirm('确定删除吗?')) {
+            axios.get('/api/newsdelet/' + id)
+            .then(function(res){
+                alert('删除成功!')
+                getList();
+            })
+            .catch(function(error){
+                console.log(error);
+            });
+        }
+    }
+
+    // 编辑文章
+    function editNews(id) {
+        window.location.href = '/newsedit?id=' + id;
+    }
+
+</script>
+</body>
+</html>
