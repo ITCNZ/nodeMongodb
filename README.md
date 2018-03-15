@@ -4,6 +4,16 @@
 
 > 首先要确保安装了MongoDB, cd 到mongodb/bin目录下，执行“./mongod”命令，启动MongoDB。
 
+
+## 用到的技术
+
+> Node (v7.9.0)
+
+> Express（4.x)
+
+> MongoDB
+
+
 ## Build Setup
 
 ``` bash
