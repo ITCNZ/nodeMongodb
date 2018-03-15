@@ -2,7 +2,7 @@
 
 > node  简单案例，一个文章的增删改查案例，一个爬虫案例
 
-首先要确保安装了MongoDB, cd 到mongodb/bin目录下，执行“./mongod”命令，启动MongoDB。
+> 首先要确保安装了MongoDB, cd 到mongodb/bin目录下，执行“./mongod”命令，启动MongoDB。
 
 ## Build Setup
 
